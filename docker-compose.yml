@@ -1,6 +1,7 @@
 services:
   db:
     image: postgres:17.5
+    container_name: rest-api-basics-db
     environment:
       POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_USER: ${DATABASE_USERNAME}
@@ -8,18 +9,17 @@ services:
     ports:
       - "5431:5432"
     volumes:
-      - postgres_data:/var/lib/docker/volumes/postgres_data/_data
+      - postgres_data:/var/lib/postgresql/data
     env_file:
       - .env
     
   django-web:
     build: .
-    container_name: fartak
+    container_name: rest-api-basics
     ports:
       - "8000:8000"
     volumes:
       - .:/app
-    command: python manage.py runserver 0.0.0.0:8000
     depends_on:
       - db
     environment:
